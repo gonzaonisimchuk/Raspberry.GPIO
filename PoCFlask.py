@@ -1,8 +1,8 @@
-from flask import Flask, jsonify, make_response, request, abort
+from flask import Flask#, jsonify, make_response, request, abort
 import RPi.GPIO as GPIO
 
 app = Flask(__name__)
-devices= {5: "Bano",
+devices= {5: "Baño",
 6: "P1",
 13: "P2",
 19: "P3",

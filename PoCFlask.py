@@ -1,16 +1,21 @@
-from flask import Flask#, jsonify, make_response, request, abort
+from flask import Flask, jsonify, make_response, request, abort
 import RPi.GPIO as GPIO
 
 app = Flask(__name__)
-devices= {5: "Baño",
-6: "P1",
-13: "P2",
-19: "P3",
-21: "P4",
-26: "Afuera",
-27: "Test" }
+devices= {"Bano": 5,
+"P1": 13,
+"P2": 26,
+"P3": 19,
+"P4": 6,
+"Afuera": 21,
+"Test": 27 }
 
 def setupPines():
+	GPIO.setup(6, GPIO.OUT)
+	GPIO.setup(13, GPIO.OUT)
+	GPIO.setup(19, GPIO.OUT)
+	GPIO.setup(21, GPIO.OUT)
+	GPIO.setup(26, GPIO.OUT)
 	GPIO.setup(27, GPIO.OUT)
 
 def encender(pin):
@@ -31,15 +36,15 @@ def index():
 
 @app.route('/<id>',methods = ['GET'])
 def indexid(id):
-	id = int(id)
-	if devices.get(id) == None:
+	pin = devices.get(id.upper())
+	if pin == None:
 		return "Dispositivo no encontrado"
-	if GPIO.input(id) == 0:
-		encender(id)
-		return str(id) + " encendido"
+	if GPIO.input(pin) == 0:
+		encender(pin)
+		return "dispositivo " + id + " / pin " + str(pin) + " /encendido"
 	else:
-		apagar(id)
-		return str(id) + " apagado"
+		apagar(pin)
+		return "dispositivo " + id + " / pin " + str(pin) + " /apagado"
 #	return "Hola"
 
 @app.route('/dispositivos',methods = ['GET'])

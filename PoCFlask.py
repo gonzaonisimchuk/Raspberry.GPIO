@@ -75,8 +75,8 @@ def not_foud(error):
 	return "error 405"
 
 if __name__ == '__main__':
-	app.run(debug = True, host=_host, port=_port)
 	log.info("Inicio")
 	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
 	setupPines()
+	app.run(debug = False, host=_host, port=_port)

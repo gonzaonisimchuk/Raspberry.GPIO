@@ -40,7 +40,7 @@ def apagar(pin):
 
 @app.route('/',methods = ['GET'])
 def index():
-	return "Sitema funcionando"
+	return "Sistema funcionando"
 
 @app.route('/<id>',methods = ['GET'])
 def indexid(id):

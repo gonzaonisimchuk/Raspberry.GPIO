@@ -29,7 +29,7 @@ def setupPines():
 		log.info("setupPines")
 		for device in devices.values():
 			log.info("GPIO.OUT: " + str(device))
-    		GPIO.setup(device, GPIO.OUT)
+			GPIO.setup(device, GPIO.OUT)
 	except:
 		log.exception(sys.exc_info()[0])
 

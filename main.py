@@ -3,6 +3,7 @@ import sys
 import logging as log
 import datetime as dt
 import RPi.GPIO as GPIO
+import database
 
 _host = '0.0.0.0'
 _port = 4010
@@ -10,6 +11,8 @@ _port = 4010
 log.basicConfig(filename='{:%Y-%m-%d}.log'.format(dt.datetime.now()),
 				level=log.DEBUG, 
 				format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+db = database.DataBase()
 
 app = Flask(__name__)
 devices = {
@@ -26,7 +29,7 @@ def setupPines():
 		log.info("setupPines")
 		for device in devices.values():
 			log.info("GPIO.OUT: " + str(device))
-    			GPIO.setup(device, GPIO.OUT)
+    		GPIO.setup(device, GPIO.OUT)
 	except:
 		log.exception(sys.exc_info()[0])
 
@@ -50,11 +53,13 @@ def indexid(id):
 		return "Dispositivo no encontrado"
 	if GPIO.input(pin) == 0:
 		encender(pin)
+		event = db.AddEvent(id, str(pin), "encendido")
 		message = "{ dispositivo: " + id + ", pin: " + str(pin) + ", estado: encendido }"
 		log.info(message)
 		return message
 	else:
 		apagar(pin)
+		event = db.AddEvent(id, str(pin), "apagado")
 		message = "{ dispositivo: " + id + ", pin: " + str(pin) + ", estado: apagado }"
 		log.info(message)
 		return message
